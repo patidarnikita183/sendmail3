@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outlook Mail Sender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">📧</div>
+        <h1>Outlook Mail Sender</h1>
+        <p class="subtitle">Sign in with your Microsoft account and send personalized emails to multiple recipients</p>
+
+        <div class="step-indicator">
+            <div class="step active" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+            <div class="step" id="step3">3</div>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <!-- Sign In Section -->
+        <div id="signin-section">
+            <button class="btn" onclick="signIn()" id="signin-btn">
+                <span id="signin-text">Sign In with Microsoft</span>
+            </button>
+            <p style="margin-top: 15px; color: #666; font-size: 14px; line-height: 1.5;">
+                🔐 You'll be asked to select your Microsoft account and grant permissions to send emails
+            </p>
+        </div>
+
+        <!-- User Info Section -->
+        <div id="user-info-section" class="hidden">
+            <div class="user-info">
+                <h4>✅ Signed in as:</h4>
+                <div class="user-details">
+                    <div class="user-name" id="user-name">Loading...</div>
+                    <div class="user-email" id="user-email">Loading...</div>
+                    <div class="user-title" id="user-title"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Form Section -->
+        <div id="email-section" class="hidden">
+            <div class="mail-form">
+                <!-- Recipients Section -->
+                <div class="form-group">
+                    <label for="recipients-method">📋 How would you like to add recipients?</label>
+                    <select id="recipients-method" onchange="toggleRecipientMethod()">
+                        <option value="single">Single Recipient</option>
+                        <option value="text">Multiple Recipients (Text)</option>
+                        <option value="file">Upload Recipients File</option>
+                    </select>
+                </div>
+
+                <!-- Single Recipient -->
+                <div class="form-group" id="single-recipient-group">
+                    <label for="recipient">👤 Recipient Email:</label>
+                    <input type="email" id="recipient" placeholder="Enter recipient's email address">
+                </div>
+
+                <!-- Multiple Recipients Text -->
+                <div class="form-group hidden" id="text-recipients-group">
+                    <label for="recipients-text">👥 Recipients (comma, semicolon, or newline separated):</label>
+                    <textarea id="recipients-text" placeholder="Enter multiple email addresses separated by commas, semicolons, or new lines:&#10;example1@email.com, example2@email.com&#10;example3@email.com" rows="4"></textarea>
+                    <small>
+                        💡 You can separate emails with commas, semicolons, or put each on a new line
+                    </small>
+                </div>
+
+                <!-- File Upload -->
+                <div class="form-group hidden" id="file-recipients-group">
+                    <label for="recipients-file">📎 Upload Recipients File:</label>
+                    <input type="file" id="recipients-file" accept=".txt,.csv,.xlsx,.xls">
+                    <small>
+                        <strong>📁 Supported formats:</strong><br>
+                        • <strong>Excel (.xlsx, .xls):</strong> Should have 'Name' and 'Email' columns<br>
+                        • <strong>CSV:</strong> Should have 'Name' and 'Email' columns<br>
+                        • <strong>Text (.txt):</strong> One email per line or comma separated
+                    </small>
+                    
+                    <!-- File Format Help -->
+                    <div class="file-help">
+                        <strong>📋 Excel/CSV File Format Example:</strong>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>john@example.com</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>jane@example.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <small style="margin-top: 8px; display: block;">
+                            📝 Column names are flexible (e.g., "Full Name", "E-mail", "Email Address" etc.)
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Preview Recipients -->
+                <div class="form-group hidden" id="recipients-preview">
+                    <label>👀 Recipients Preview:</label>
+                    <div class="recipients-preview" id="recipients-list"></div>
+                    <div class="recipients-count" id="recipients-count"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">📝 Subject:</label>
+                    <input type="text" id="subject" value="Wanna go out for lunch?" placeholder="Enter email subject">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">💬 Message:</label>
+                    <textarea id="message" placeholder="Enter your message here...">Hi {name},
+
+I know a sweet spot that just opened around us! Would you like to join me for lunch?
+
+Best regards</textarea>
+                    <small>
+                        💡 Use {name} in your message to personalize it with each recipient's name
+                    </small>
+                </div>
+
+                <button class="btn" onclick="sendEmail()" id="send-btn">
+                    <span id="send-text">📤 Send Email</span>
+                </button>
+
+                <button class="btn btn-secondary" onclick="viewEmails()" id="view-emails-btn">
+                    📬 View Recent Emails
+                </button>
+
+                <button class="btn btn-danger" onclick="signOut()">
+                    🚪 Sign Out
+                </button>
+            </div>
+        </div>
+
+        <!-- Email List Section -->
+        <div id="emails-section" class="hidden">
+            <h3 style="margin-bottom: 24px; color: #333; font-size: 24px;">📬 Recent Emails</h3>
+            <div id="emails-list"></div>
+            <button class="btn btn-secondary" onclick="backToForm()">
+                ← Back to Send Email
+            </button>
+        </div>
+    </div>
+    <!-- Add this section after the email-section div and before emails-section -->
+
+<!-- Email Tracking Section -->
+<div id="tracking-section" class="hidden">
+    <h3 style="margin-bottom: 24px 50px; color: #333; font-size: 24px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);">📊 Email Tracking Dashboard</h3>
+    
+    <!-- Summary Cards -->
+    <div class="tracking-summary">
+        <div class="summary-card">
+            <div class="summary-icon">📤</div>
+            <div class="summary-details">
+                <div class="summary-number" id="total-sent">0</div>
+                <div class="summary-label">Total Sent</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon">👀</div>
+            <div class="summary-details">
+                <div class="summary-number" id="total-opened">0</div>
+                <div class="summary-label">Opened</div>
+            </div>
+        </div>
+        
+        <div class="summary-card">
+            <div class="summary-icon">🖱️</div>
+            <div class="summary-details">
+                <div class="summary-number" id="total-clicked">0</div>
+                <div class="summary-label">Clicked</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon">📈</div>
+            <div class="summary-details">
+                <div class="summary-number" id="open-rate">0%</div>
+                <div class="summary-label">Open Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="tracking-filters">
+        <div class="filter-group">
+            <label for="date-filter">📅 Filter by Date:</label>
+            <select id="date-filter" onchange="filterTrackingData()">
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="status-filter">📊 Filter by Status:</label>
+            <select id="status-filter" onchange="filterTrackingData()">
+                <option value="all">All Status</option>
+                <option value="sent">Sent Only</option>
+                <option value="opened">Opened</option>
+                <option value="clicked">Clicked</option>
+                <option value="not-opened">Not Opened</option>
+            </select>
+        </div>
+        <button class="btn btn-secondary" onclick="refreshTrackingData()" style="width: auto; padding: 8px 16px; font-size: 14px;">
+            🔄 Refresh
+        </button>
+    </div>
+
+    <!-- Tracking List -->
+    <div class="tracking-list" id="tracking-list">
+        <!-- Tracking items will be populated here -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="tracking-pagination" id="tracking-pagination" style="display: none;">
+        <button class="btn btn-secondary" onclick="changePage(-1)" id="prev-page" style="width: auto; margin-right: 10px;">
+            ← Previous
+        </button>
+        <span id="page-info">Page 1 of 1</span>
+        <button class="btn btn-secondary" onclick="changePage(1)" id="next-page" style="width: auto; margin-left: 10px;">
+            Next →
+        </button>
+    </div>
+
+    <button class="btn btn-secondary" onclick="backToForm()">
+        ← Back to Send Email
+    </button>
+</div>
+
+<!-- Add this button in the email-section, after the "View Recent Emails" button -->
+<button class="btn" onclick="viewTracking()" id="view-tracking-btn" style="background: linear-gradient(135deg, #28a745, #20c997);">
+    📊 View Email Tracking
+</button>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
