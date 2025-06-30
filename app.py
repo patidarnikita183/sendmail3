@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from flask import Flask, request, redirect, url_for, session, jsonify, render_template,Response,render_template_string
+=======
+from flask import Flask, request, redirect, url_for, session, jsonify, render_template,Response
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 import base64
 import urllib.parse
 from urllib.parse import quote, unquote
@@ -14,14 +18,18 @@ from pymongo import MongoClient
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
+<<<<<<< HEAD
 from datetime import datetime, timedelta, timezone;
 
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
 load_dotenv()  
 # import urllib.parse
 app = Flask(__name__)
 app.secret_key = 'any_secret_key'  
 
+<<<<<<< HEAD
 print("before mongodb")
 MONGO_URL = os.getenv("MONGO_URL")
 client = MongoClient(MONGO_URL,tls=True)
@@ -31,10 +39,19 @@ print("after connection to mongodb")
 
 # Collections
 print("1")
+=======
+
+MONGO_URL = os.getenv("MONGO_URL")
+client = MongoClient(MONGO_URL,tls=True)
+db = client["email_tracking"]
+
+# Collections
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 campaigns_collection = db["campaigns"]
 recipients_collection = db["recipients"]
 email_opens_collection = db["email_opens"]
 link_clicks_collection = db["link_clicks"]
+<<<<<<< HEAD
 # unsubscribed_collection = db["unsubscribed_emails"]
 print("Adding unsubscribe collection...")
 unsubscribes_collection = db["unsubscribes"]
@@ -47,6 +64,10 @@ print("2")
 
 # Configuration
 print("3")
+=======
+
+# Configuration
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 CLIENT_ID =os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 TENANT_ID =os.getenv("TENANT_ID")
@@ -54,7 +75,11 @@ PORT = os.getenv("PORT")
 REDIRECT_URI = os.getenv("REDIRECT_URI")
 # REDIRECT_URI = f"https://8d6e-106-222-213-67.ngrok-free.app:{PORT}/callback"
 BASE_URL = os.getenv("BASE_URL")
+<<<<<<< HEAD
 print("4")
+=======
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 # Microsoft Graph endpoints
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0"
@@ -66,9 +91,14 @@ USER_SCOPES = [
     "Mail.Send",
     "Mail.ReadWrite"
 ]
+<<<<<<< HEAD
 def get_auth_url():
     print("5")
     
+=======
+
+def get_auth_url():
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     """Generate the authorization URL for Microsoft Graph"""
     params = {
         'client_id': CLIENT_ID,
@@ -81,9 +111,14 @@ def get_auth_url():
     
     auth_url = f"{AUTHORITY}/oauth2/v2.0/authorize?" + urllib.parse.urlencode(params)
     return auth_url
+<<<<<<< HEAD
 def get_access_token(auth_code):
     print("6")
 
+=======
+
+def get_access_token(auth_code):
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     """Exchange authorization code for access token"""
     token_url = f"{AUTHORITY}/oauth2/v2.0/token"
     
@@ -98,11 +133,18 @@ def get_access_token(auth_code):
     response = requests.post(token_url, data=data)
     return response.json() if response.status_code == 200 else None
 
+<<<<<<< HEAD
 print("7")
 
 # Add SocketIO support after your app initialization
 socketio = SocketIO(app, cors_allowed_origins="*")
 print("8")
+=======
+
+# Add SocketIO support after your app initialization
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 # Add your BASE_URL configuration (update with your actual domain/ngrok URL)
 # BASE_URL = "http://localhost:9000"  # Update this with your actual domain or ngrok URL
 # BASE_URL =  "https://a31a-2401-4900-8821-dad7-3d1e-864e-454a-65e0.ngrok-free.app"
@@ -110,13 +152,18 @@ print("8")
 def init_tracking_db():
     """Initialize tracking database with indexes"""
     try:
+<<<<<<< HEAD
         # Existing indexes...
+=======
+        # Create indexes for better performance
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         campaigns_collection.create_index("id", unique=True)
         recipients_collection.create_index("tracking_id", unique=True)
         recipients_collection.create_index("campaign_id")
         email_opens_collection.create_index("tracking_id")
         link_clicks_collection.create_index("tracking_id")
         
+<<<<<<< HEAD
         # Existing unsubscribed emails index
         unsubscribes_collection.create_index("email", unique=True)
         unsubscribes_collection.create_index("tracking_id")
@@ -130,6 +177,8 @@ def init_tracking_db():
         replies_collection.create_index("received_at")
         
         print("✅ Campaign-specific replies MongoDB database initialized")
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         print("✅ Email tracking MongoDB database initialized")
     except Exception as e:
         print(f"Error initializing database: {e}")
@@ -144,7 +193,11 @@ def save_campaign(campaign_id, subject, message, total_recipients):
             "subject": subject,
             "content": message,
             "status": "sending",
+<<<<<<< HEAD
             "created_at":  datetime.now(timezone(timedelta(hours=5, minutes=30))),
+=======
+            "created_at":  datetime.now(timezone.utc),
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             "sent_at": None,
             "total_recipients": total_recipients
         }
@@ -167,7 +220,11 @@ def save_email_tracking(campaign_id, tracking_id, recipient_name, recipient_emai
             "email": recipient_email,
             "name": recipient_name,
             "tracking_id": tracking_id,
+<<<<<<< HEAD
             "sent_at": datetime.now(timezone(timedelta(hours=5, minutes=30))),
+=======
+            "sent_at": datetime.now(timezone.utc),
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             "delivery_status": "sent"
         }
         
@@ -178,7 +235,11 @@ def save_email_tracking(campaign_id, tracking_id, recipient_name, recipient_emai
 
 # Function to add tracking to email content
 def add_email_tracking(content, tracking_id):
+<<<<<<< HEAD
     """Add tracking pixel, link tracking, and unsubscribe link to email content"""
+=======
+    """Add tracking pixel and link tracking to email content"""
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     
     # Add tracking pixel (invisible 1x1 image)
     tracking_pixel = f'<img src="{BASE_URL}/track/open/{tracking_id}" width="1" height="1" style="display:none;" alt="" border="0">'
@@ -194,6 +255,7 @@ def add_email_tracking(content, tracking_id):
         </a>
     </div>
     '''
+<<<<<<< HEAD
     
     # Add unsubscribe link
     unsubscribe_link = f'''
@@ -210,6 +272,9 @@ def add_email_tracking(content, tracking_id):
     </div>
     '''
     
+=======
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     def replace_link(match):
         original_url = match.group(0)
         if original_url.startswith('http') and BASE_URL not in original_url:
@@ -224,6 +289,7 @@ def add_email_tracking(content, tracking_id):
     # Regex to match URLs starting with http or https
     tracked_content = re.sub(r'https?://[^\s]+', replace_link, content)
 
+<<<<<<< HEAD
     # Insert tracking elements and unsubscribe link
     if '<body' in tracked_content:
         body_end = tracked_content.rfind('</body>')
@@ -233,16 +299,28 @@ def add_email_tracking(content, tracking_id):
                              unsubscribe_link + 
                              tracked_content[body_end:])
         
+=======
+    # Insert tracking elements
+    if '<body' in tracked_content:
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         body_start = tracked_content.find('>', tracked_content.find('<body'))
         if body_start != -1:
             tracked_content = (tracked_content[:body_start+1] + 
                              tracking_pixel + css_tracker + view_online + 
                              tracked_content[body_start+1:])
     else:
+<<<<<<< HEAD
         tracked_content = tracking_pixel + css_tracker + view_online + tracked_content + unsubscribe_link
     
     return tracked_content
 
+=======
+        tracked_content = tracking_pixel + css_tracker + view_online + tracked_content
+    
+    return tracked_content
+
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 # Updated tracking routes
 @app.route('/track/open/<tracking_id>')
 def track_email_open(tracking_id):
@@ -260,7 +338,11 @@ def track_email_open(tracking_id):
             # Record the email open
             open_data = {
                 "tracking_id": tracking_id,
+<<<<<<< HEAD
                 "opened_at": datetime.now(timezone(timedelta(hours=5, minutes=30))),
+=======
+                "opened_at": datetime.now(timezone.utc),
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 "ip_address": ip_address,
                 "user_agent": user_agent
             }
@@ -313,11 +395,19 @@ def track_link_click(tracking_id, encoded_url):
             name = recipient.get("name")
             ip_address = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
             user_agent = request.headers.get('User-Agent', '')
+<<<<<<< HEAD
+=======
+            
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             # Record the link click
             click_data = {
                 "tracking_id": tracking_id,
                 "url": original_url,
+<<<<<<< HEAD
                 "clicked_at": datetime.now(timezone(timedelta(hours=5, minutes=30))),
+=======
+                "clicked_at": datetime.now(timezone.utc),
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 "ip_address": ip_address,
                 "user_agent": user_agent
             }
@@ -379,7 +469,11 @@ def view_email_online(tracking_id):
             
             open_data = {
                 "tracking_id": tracking_id,
+<<<<<<< HEAD
                 "opened_at": datetime.now(timezone(timedelta(hours=5, minutes=30))),
+=======
+                "opened_at": datetime.now(timezone.utc),
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 "ip_address": ip_address,
                 "user_agent": user_agent
             }
@@ -413,6 +507,7 @@ def view_email_online(tracking_id):
     except Exception as e:
         print(f"Error viewing email online: {e}")
         return f"Error: {str(e)}", 500
+<<<<<<< HEAD
     
 
 
@@ -618,6 +713,15 @@ def get_campaign_analytics(campaign_id):
         # First check for new replies
         check_response = check_campaign_replies(campaign_id)
         
+=======
+
+# Analytics routes
+@app.route('/api/analytics/campaign/<campaign_id>')
+def get_campaign_analytics(campaign_id):
+    """Get analytics for a specific campaign"""
+    try:
+        # Get campaign info
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         campaign = campaigns_collection.find_one({"id": campaign_id})
         
         if not campaign:
@@ -626,6 +730,7 @@ def get_campaign_analytics(campaign_id):
         # Get recipients count
         total_sent = recipients_collection.count_documents({"campaign_id": campaign_id})
         
+<<<<<<< HEAD
         # Get recipient tracking IDs for this campaign
         recipient_tracking_ids = [r["tracking_id"] for r in recipients_collection.find({"campaign_id": campaign_id}, {"tracking_id": 1})]
         recipient_emails = [r["email"] for r in recipients_collection.find({"campaign_id": campaign_id}, {"email": 1})]
@@ -633,6 +738,11 @@ def get_campaign_analytics(campaign_id):
         # Get unique opens count
         unique_opens_pipeline = [
             {"$match": {"tracking_id": {"$in": recipient_tracking_ids}}},
+=======
+        # Get unique opens count
+        unique_opens_pipeline = [
+            {"$match": {"tracking_id": {"$in": [r["tracking_id"] for r in recipients_collection.find({"campaign_id": campaign_id}, {"tracking_id": 1})]}}},
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             {"$group": {"_id": "$tracking_id"}},
             {"$count": "unique_opens"}
         ]
@@ -641,12 +751,20 @@ def get_campaign_analytics(campaign_id):
         
         # Get total opens count
         total_opens = email_opens_collection.count_documents({
+<<<<<<< HEAD
             "tracking_id": {"$in": recipient_tracking_ids}
+=======
+            "tracking_id": {"$in": [r["tracking_id"] for r in recipients_collection.find({"campaign_id": campaign_id}, {"tracking_id": 1})]}
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         })
         
         # Get unique clicks count
         unique_clicks_pipeline = [
+<<<<<<< HEAD
             {"$match": {"tracking_id": {"$in": recipient_tracking_ids}}},
+=======
+            {"$match": {"tracking_id": {"$in": [r["tracking_id"] for r in recipients_collection.find({"campaign_id": campaign_id}, {"tracking_id": 1})]}}},
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             {"$group": {"_id": "$tracking_id"}},
             {"$count": "unique_clicks"}
         ]
@@ -655,6 +773,7 @@ def get_campaign_analytics(campaign_id):
         
         # Get total clicks count
         total_clicks = link_clicks_collection.count_documents({
+<<<<<<< HEAD
             "tracking_id": {"$in": recipient_tracking_ids}
         })
         
@@ -689,14 +808,24 @@ def get_campaign_analytics(campaign_id):
         unique_reply_result = list(replies_collection.aggregate(unique_reply_pipeline))
         unique_replies = unique_reply_result[0]["unique_replies"] if unique_reply_result else 0
         
+=======
+            "tracking_id": {"$in": [r["tracking_id"] for r in recipients_collection.find({"campaign_id": campaign_id}, {"tracking_id": 1})]}
+        })
+        
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         # Get detailed recipient data
         recipients_data = []
         for recipient in recipients_collection.find({"campaign_id": campaign_id}):
             tracking_id = recipient["tracking_id"]
+<<<<<<< HEAD
             email = recipient["email"]
             opens_count = email_opens_collection.count_documents({"tracking_id": tracking_id})
             clicks_count = link_clicks_collection.count_documents({"tracking_id": tracking_id})
             replies_count = replies_collection.count_documents({"tracking_id": tracking_id})
+=======
+            opens_count = email_opens_collection.count_documents({"tracking_id": tracking_id})
+            clicks_count = link_clicks_collection.count_documents({"tracking_id": tracking_id})
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             
             first_open = email_opens_collection.find_one(
                 {"tracking_id": tracking_id},
@@ -704,6 +833,7 @@ def get_campaign_analytics(campaign_id):
             )
             first_open_time = first_open["opened_at"] if first_open else None
             
+<<<<<<< HEAD
             # Check if this recipient unsubscribed
             unsubscribe_info = unsubscribes_collection.find_one({"email": email})
             is_unsubscribed = unsubscribe_info is not None
@@ -716,10 +846,15 @@ def get_campaign_analytics(campaign_id):
             
             recipients_data.append({
                 'email': email,
+=======
+            recipients_data.append({
+                'email': recipient["email"],
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 'name': recipient["name"],
                 'tracking_id': tracking_id,
                 'opens': opens_count,
                 'clicks': clicks_count,
+<<<<<<< HEAD
                 'replies': replies_count,
                 'first_open': first_open_time if first_open_time else None,
                 'unsubscribed': is_unsubscribed,
@@ -728,14 +863,24 @@ def get_campaign_analytics(campaign_id):
                 'reply_date': reply_date if reply_date else None
             })
             
+=======
+                'first_open': first_open_time.isoformat() if first_open_time else None
+            })
+        
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         # Calculate rates
         open_rate = (unique_opens / total_sent * 100) if total_sent > 0 else 0
         click_rate = (unique_clicks / total_sent * 100) if total_sent > 0 else 0
         click_to_open_rate = (unique_clicks / unique_opens * 100) if unique_opens > 0 else 0
+<<<<<<< HEAD
         unsubscribe_rate = (unsubscribe_count / total_sent * 100) if total_sent > 0 else 0
         reply_rate = (unique_replies / total_sent * 100) if total_sent > 0 else 0
         
         data = {
+=======
+        
+        return jsonify({
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             'campaign_id': campaign_id,
             'campaign_name': campaign.get("name"),
             'subject': campaign.get("subject"),
@@ -744,6 +889,7 @@ def get_campaign_analytics(campaign_id):
             'total_opens': total_opens,
             'unique_clicks': unique_clicks,
             'total_clicks': total_clicks,
+<<<<<<< HEAD
             'unsubscribe_count': unsubscribe_count,
             'reply_count': reply_count,
             'unique_replies': unique_replies,
@@ -778,6 +924,17 @@ def get_campaign_analytics(campaign_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+=======
+            'open_rate': round(open_rate, 2),
+            'click_rate': round(click_rate, 2),
+            'click_to_open_rate': round(click_to_open_rate, 2),
+            'recipients': recipients_data
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 @app.route('/api/analytics/all-campaigns')
 def get_all_campaigns_analytics():
     """Get analytics summary for all campaigns"""
@@ -832,6 +989,7 @@ def get_all_campaigns_analytics():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+<<<<<<< HEAD
 # Add API route to get all unsubscribed emails
 @app.route('/api/unsubscribes')
 def get_all_unsubscribes():
@@ -855,6 +1013,8 @@ def get_all_unsubscribes():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
 def make_graph_request(endpoint, access_token, method='GET', data=None):
     """Make a request to Microsoft Graph API"""
@@ -1080,6 +1240,7 @@ def validate_email(email):
 
 @app.route('/send-mail', methods=['POST'])
 def send_mail():
+<<<<<<< HEAD
     """Send personalized emails to multiple recipients via Outlook with tracking and unsubscribe checking"""
     try:
         # Authentication check
@@ -1117,17 +1278,43 @@ def send_mail():
         if not access_token:
             return jsonify({'error': 'User not authenticated. Please sign in first.'}), 401
 
+=======
+    """Send personalized emails to multiple recipients via Outlook with tracking"""
+    try:
+        # Authentication check
+        global ACCESS_TOKEN
+        access_token = session.get('access_token')
+        if not access_token:
+            # access_token = ACCESS_TOKEN
+            # if not access_token:
+            return jsonify({'error': 'User not authenticated. Please sign in first.'}), 401
+        # access_token = """"""
+        print("1")
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         # Generate campaign ID
         campaign_id = str(uuid.uuid4())
         
         # Handle both form data and JSON data
         recipients = []
         if request.content_type and 'multipart/form-data' in request.content_type:
+<<<<<<< HEAD
             subject = request.form.get('subject')
             message = request.form.get('message')
             recipients_text = request.form.get('recipients_text', '')
             link = request.form.get("link","https://www.microsoft.com")
             
+=======
+            print("11")
+            subject = request.form.get('subject')
+            print("111")
+            message = request.form.get('message')
+            print("1111")
+            recipients_text = request.form.get('recipients_text', '')
+            print("11111")
+            link = request.form.get("link","https://www.microsoft.com")
+            
+            
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             # Process uploaded file
             if 'recipients_file' in request.files:
                 file = request.files['recipients_file']
@@ -1146,6 +1333,10 @@ def send_mail():
         else:
             # Handle JSON data
             data = request.json
+<<<<<<< HEAD
+=======
+            print("2")
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             subject = data.get('subject')
             message = data.get('message')
             recipients_list = data.get('recipients', [])
@@ -1161,12 +1352,21 @@ def send_mail():
             return jsonify({'error': 'No recipients specified'}), 400
         if not subject or not message:
             return jsonify({'error': 'Subject and message are required'}), 400
+<<<<<<< HEAD
+=======
+            
+        # Save campaign to database WITH TRACKING
+        save_campaign(campaign_id, subject, message, len(recipients))
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         
         # Remove duplicates and validate emails
         seen_emails = set()
         valid_recipients = []
         invalid_recipients = []
+<<<<<<< HEAD
         unsubscribed_recipients = []
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         
         for recipient_data in recipients:
             email = recipient_data.get('email', '').strip().lower()
@@ -1174,6 +1374,7 @@ def send_mail():
             
             if email and email not in seen_emails:
                 if validate_email(email):
+<<<<<<< HEAD
                     # CHECK IF EMAIL IS UNSUBSCRIBED
                     if is_email_unsubscribed(email):
                         unsubscribed_recipients.append({
@@ -1186,11 +1387,18 @@ def send_mail():
                             'name': name or email.split('@')[0], 
                             'email': email
                         })
+=======
+                    valid_recipients.append({
+                        'name': name or email.split('@')[0], 
+                        'email': email
+                    })
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                     seen_emails.add(email)
                 else:
                     invalid_recipients.append(email)
         
         if not valid_recipients:
+<<<<<<< HEAD
             return jsonify({
                 'error': 'No valid email addresses found after filtering unsubscribed emails',
                 'unsubscribed_count': len(unsubscribed_recipients),
@@ -1200,6 +1408,10 @@ def send_mail():
         # Save campaign to database WITH TRACKING
         save_campaign(campaign_id, subject, message, len(valid_recipients))
         
+=======
+            return jsonify({'error': 'No valid email addresses found'}), 400
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         # Send individual emails with tracking
         sent_count = 0
         failed_recipients = []
@@ -1214,17 +1426,30 @@ def send_mail():
                 # Create personalized message content
                 personalized_message = message.replace('{name}', recipient_name)
                 
+<<<<<<< HEAD
                 # ADD TRACKING TO EMAIL CONTENT (including unsubscribe link)
                 personalized_message = personalized_message + link
                 tracked_message = add_email_tracking(personalized_message, tracking_id)
                 
+=======
+                # ADD TRACKING TO EMAIL CONTENT
+                personalized_message = personalized_message + link
+                tracked_message = add_email_tracking(personalized_message, tracking_id)
+                # return jsonify({"res":tracked_message})
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 # Create email data for Outlook API
                 send_mail_data = {
                     "message": {
                         "subject": subject,
                         "body": {
                             "contentType": "HTML",  # Important: Use HTML for tracking
+<<<<<<< HEAD
                             "content": tracked_message
+=======
+                            "content": f"""
+                                {tracked_message}
+                            """  # Make sure this is a string, not raw HTML code
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                         },
                         "toRecipients": [
                             {
@@ -1287,7 +1512,10 @@ def send_mail():
             'campaign_id': campaign_id,
             'sent_count': sent_count,
             'total_recipients': len(valid_recipients),
+<<<<<<< HEAD
             'unsubscribed_count': len(unsubscribed_recipients),
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             'tracking_data': tracking_data,
             'tracking_enabled': True,
             'analytics_url': f'{BASE_URL}/api/analytics/campaign/{campaign_id}'
@@ -1298,6 +1526,7 @@ def send_mail():
             
         if failed_recipients:
             response_data['failed_recipients'] = failed_recipients
+<<<<<<< HEAD
             
         if unsubscribed_recipients:
             response_data['unsubscribed_recipients'] = unsubscribed_recipients
@@ -1307,11 +1536,21 @@ def send_mail():
         print(f"🚫 Skipped {len(unsubscribed_recipients)} unsubscribed recipients")
         print(f"📈 View analytics at: {BASE_URL}/api/analytics/campaign/{campaign_id}")
         print("this is send mail response data &&&&&&&&&&&&&&&&&&&\n",response_data)
+=======
+        
+        print(f"📊 Campaign {campaign_id} sent with tracking enabled!")
+        print(f"📈 View analytics at: {BASE_URL}/api/analytics/campaign/{campaign_id}")
+            
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         return jsonify(response_data)
         
     except Exception as e:
         print(f'❌ Error sending email: {e}')
         return jsonify({'error': f'Failed to send email: {str(e)}'}), 500
+<<<<<<< HEAD
+=======
+    
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
 @app.route('/send-mail/<recipient>')
 def send_mail_single(recipient):
@@ -1371,6 +1610,7 @@ def send_mail_single(recipient):
     except Exception as error:
         print(f"Error sending message: {error}")
         return jsonify({'error': str(error)}), 500
+<<<<<<< HEAD
 
 # Add these new functions anywhere after the existing functions (around line 400)
 
@@ -1788,6 +2028,9 @@ def check_current_campaign_replies(campaign_id):
         print(f"Error checking current campaign replies: {e}")
         return {'error': str(e)}
 
+=======
+    
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 if __name__ == '__main__':
     # Initialize database when the app starts
     init_tracking_db()

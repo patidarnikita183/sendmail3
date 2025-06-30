@@ -380,6 +380,7 @@ function signIn() {
 }
 
 // Enhanced sendEmail function with multiple recipient support
+<<<<<<< HEAD
 // async function sendEmail() {
 //     const method = document.getElementById('recipients-method').value;
 //     const subject = document.getElementById('subject').value;
@@ -511,6 +512,8 @@ function signIn() {
 //     }
 // }
 
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 async function sendEmail() {
     const method = document.getElementById('recipients-method').value;
     const subject = document.getElementById('subject').value;
@@ -576,9 +579,13 @@ async function sendEmail() {
     }
 
     setLoading('send-btn', 'send-text', true, 'Sending...');
+<<<<<<< HEAD
     
     // Show sending section
     showSendingProgress();
+=======
+    showStatus('Processing recipients and sending email(s)...', 'info');
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
     try {
         let response;
@@ -606,6 +613,7 @@ async function sendEmail() {
 
         if (response.ok) {
             const result = await response.json();
+<<<<<<< HEAD
             
             // Store campaign ID for tracking
             if (result.campaign_id) {
@@ -615,6 +623,23 @@ async function sendEmail() {
             // Hide sending progress and show detailed results
             hideSendingProgress();
             showDetailedResults(result);
+=======
+            if (result.campaign_id) {
+                sessionStorage.setItem('campaign_id', result.campaign_id);
+            }
+
+            let statusMessage = `🎉 Successfully sent ${result.sent_count} email(s) out of ${result.total_recipients} recipients`;
+            
+            if (result.invalid_recipients && result.invalid_recipients.length > 0) {
+                statusMessage += `\n❌ Invalid emails: ${result.invalid_recipients.join(', ')}`;
+            }
+            
+            if (result.failed_recipients && result.failed_recipients.length > 0) {
+                statusMessage += `\n⚠️ Failed to send to: ${result.failed_recipients.join(', ')}`;
+            }
+            
+            showStatus(statusMessage, 'success');
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             updateStep(3);
             
             // Reset form after successful send
@@ -626,6 +651,7 @@ async function sendEmail() {
                 document.getElementById('message').value = 'Hi {name},\n\nI know a sweet spot that just opened around us! Would you like to join me for lunch?\n\nBest regards';
                 document.getElementById('recipients-method').value = 'single';
                 toggleRecipientMethod();
+<<<<<<< HEAD
             }, 5000);
         } else {
             const errorData = await response.json();
@@ -634,12 +660,21 @@ async function sendEmail() {
         }
     } catch (error) {
         hideSendingProgress();
+=======
+            }, 3000);
+        } else {
+            const errorData = await response.json();
+            showStatus(`❌ Failed to send email: ${errorData.error}`, 'error');
+        }
+    } catch (error) {
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         showStatus(`❌ Error: ${error.message}`, 'error');
     } finally {
         setLoading('send-btn', 'send-text', false);
     }
 }
 
+<<<<<<< HEAD
 // Function to show sending progress
 function showSendingProgress() {
     document.getElementById('sending_content').classList.remove('hidden');
@@ -889,6 +924,8 @@ function showCampaignSummary() {
         });
 }
 
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 async function loadUserProfile() {
     try {
         const response = await fetch('/get-user-profile');
@@ -1099,6 +1136,71 @@ let filteredTrackingData = [];
 let currentPage = 1;
 const itemsPerPage = 10;
 
+<<<<<<< HEAD
+=======
+// View Tracking Dashboard
+// async function viewTracking() {
+//     showStatus('Loading email tracking data...', 'info');
+    
+//     try {
+//         const response = await fetch('/api/analytics/campaign/<campaign_id>');
+        
+//         if (response.ok) {
+//             const data = await response.json();
+//             trackingData = data.emails || [];
+//             filteredTrackingData = [...trackingData];
+            
+//             updateTrackingSummary();
+//             displayTrackingData();
+            
+//             document.getElementById('email-section').classList.add('hidden');
+//             document.getElementById('emails-section').classList.add('hidden');
+//             document.getElementById('tracking-section').classList.remove('hidden');
+//             showStatus('', 'info');
+//         } else {
+//             const errorData = await response.json();
+//             showStatus(`Failed to load tracking data: ${errorData.error}`, 'error');
+//         }
+//     } catch (error) {
+//         showStatus(`Error: ${error.message}`, 'error');
+//     }
+// }
+// async function viewTracking() {
+//     showStatus('Loading email tracking data...', 'info');
+
+//     const campaignId = sessionStorage.getItem('campaign_id');
+
+//     if (!campaignId) {
+//         showStatus('No campaign ID found. Please send a campaign first.', 'error');
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`/api/analytics/campaign/${campaignId}`);
+
+//         if (response.ok) {
+//             const data = await response.json();
+//             trackingData = data.tracking_data || [];
+//             filteredTrackingData = [...trackingData];
+
+//             updateTrackingSummary();      // Update summary UI (e.g., sent count, etc.)
+//             displayTrackingData();        // Render email tracking details
+
+//             // Toggle UI sections
+//             document.getElementById('email-section')?.classList.add('hidden');
+//             document.getElementById('emails-section')?.classList.add('hidden');
+//             document.getElementById('tracking-section')?.classList.remove('hidden');
+
+//             showStatus('', 'info');
+//         } else {
+//             const errorData = await response.json();
+//             showStatus(`Failed to load tracking data: ${errorData.error}`, 'error');
+//         }
+//     } catch (error) {
+//         showStatus(`Error: ${error.message}`, 'error');
+//     }
+// }
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 async function viewTracking() {
     showStatus('Loading email tracking data...', 'info');
 
@@ -1111,11 +1213,17 @@ async function viewTracking() {
 
     try {
         const response = await fetch(`/api/analytics/campaign/${campaignId}`);
+<<<<<<< HEAD
         if (response.ok) {
             const data = await response.json();
             console.log("response of /api/analytics/campaign",data)
             console.log("response of /api/analytics/campaign recipients data ",data.recipients)
 
+=======
+
+        if (response.ok) {
+            const data = await response.json();
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
             // Convert recipients into enriched trackingData
             trackingData = data.recipients.map(r => ({
@@ -1127,17 +1235,25 @@ async function viewTracking() {
                 clicks: r.clicks,
                 opened_at: r.first_open,
                 clicked_at: r.clicks > 0 ? r.first_open : null,
+<<<<<<< HEAD
                 unsubscribed : r.unsubscribed,
                 unsubscribe_at : r.unsubscribe_date,
                 opened: r.opens > 0,
                 replies :r.replies>0,
                 replies_at : r.reply_date,
+=======
+                opened: r.opens > 0,
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 clicked: r.clicks > 0,
                 sent_at: r.first_open || new Date().toISOString() // fallback
             }));
 
             filteredTrackingData = [...trackingData];
+<<<<<<< HEAD
             console.log("tracking data \n",filteredTrackingData)
+=======
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             updateTrackingSummary(data);
             displayTrackingData();
 
@@ -1160,20 +1276,27 @@ function updateTrackingSummary(campaignData) {
     const totalOpened = campaignData.unique_opens;
     const totalClicked = campaignData.unique_clicks;
     const openRate = campaignData.open_rate;
+<<<<<<< HEAD
     const unsubscribe_count = campaignData.unsubscribe_count;
     const unsubscribe_rate = campaignData.unsubscribe_rate;
     const reply_count = campaignData.reply_count;
     const reply_rate = campaignData.reply_rate;
  
+=======
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     document.getElementById('total-sent').textContent = totalSent;
     document.getElementById('total-opened').textContent = totalOpened;
     document.getElementById('total-clicked').textContent = totalClicked;
     document.getElementById('open-rate').textContent = `${openRate}%`;
+<<<<<<< HEAD
     document.getElementById('unsubscribe-count').textContent = unsubscribe_count;
     document.getElementById('unsubscribe-rate').textContent = `${unsubscribe_rate}%`;
     document.getElementById('reply_count').textContent = reply_count;
     document.getElementById('reply_rate').textContent = `${reply_rate}%`;
 
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 }
 
 
@@ -1329,43 +1452,68 @@ function getStatusBadge(email) {
 
 // Get Activity Timeline
 function getActivityTimeline(email) {
+<<<<<<< HEAD
     const timeline = [];    
+=======
+    const timeline = [];
+    
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     timeline.push(`
         <div class="timeline-item">
             <div class="timeline-icon">📤</div>
             <div class="timeline-content">
                 <div class="timeline-title">Email Sent</div>
+<<<<<<< HEAD
                 <div class="timeline-time">${new Date(email.sent_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</div>
+=======
+                <div class="timeline-time">${new Date(email.sent_at).toLocaleString()}</div>
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             </div>
         </div>
     `);
 
     if (email.opened_at) {
+<<<<<<< HEAD
 
         timeline.push(`
 
+=======
+        timeline.push(`
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             <div class="timeline-item">
                 <div class="timeline-icon">👀</div>
                 <div class="timeline-content">
                     <div class="timeline-title">Email Opened</div>
+<<<<<<< HEAD
                     <div class="timeline-time">${new Date(email.opened_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</div>
+=======
+                    <div class="timeline-time">${new Date(email.opened_at).toLocaleString()}</div>
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 </div>
             </div>
         `);
     }
 
     if (email.clicked_at) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         timeline.push(`
             <div class="timeline-item">
                 <div class="timeline-icon">🖱️</div>
                 <div class="timeline-content">
                     <div class="timeline-title">Link Clicked</div>
+<<<<<<< HEAD
                     <div class="timeline-time">${new Date(email.clicked_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</div>
+=======
+                    <div class="timeline-time">${new Date(email.clicked_at).toLocaleString()}</div>
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 </div>
             </div>
         `);
     }
+<<<<<<< HEAD
     if (email.unsubscribe_at) {
         timeline.push(`
             <div class="timeline-item">
@@ -1388,6 +1536,9 @@ function getActivityTimeline(email) {
             </div>
     `);
 }
+=======
+
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     return timeline.join('');
 }
 
@@ -1597,10 +1748,13 @@ function backToForm() {
 document.addEventListener('DOMContentLoaded', () => {
     // ... existing code ...
     
+<<<<<<< HEAD
 // document.addEventListener('DOMContentLoaded', () => {
 //     document.getElementById('signin-text').setAttribute('data-original', 'Sign In with Microsoft');
 //     document.getElementById('send-text').setAttribute('data-original', 'Send Email');
 // });
+=======
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     // Close modal when clicking outside
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal-overlay')) {
@@ -1614,6 +1768,10 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+<<<<<<< HEAD
 
 });
 
+=======
+});
+>>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
