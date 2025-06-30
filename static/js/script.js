@@ -1,241 +1,4 @@
 
-
-// let isAuthenticated = false;
-
-// function showStatus(message, type = 'info') {
-//     const status = document.getElementById('status');
-//     status.textContent = message;
-//     status.className = `status ${type}`;
-//     status.style.display = 'block';
-    
-//     if (type === 'success' || type === 'error') {
-//         setTimeout(() => {
-//             status.style.display = 'none';
-//         }, 5000);
-//     }
-// }
-
-// function updateStep(stepNumber) {
-//     for (let i = 1; i <= 3; i++) {
-//         const step = document.getElementById(`step${i}`);
-//         step.classList.remove('active', 'completed');
-        
-//         if (i < stepNumber) {
-//             step.classList.add('completed');
-//         } else if (i === stepNumber) {
-//             step.classList.add('active');
-//         }
-//     }
-// }
-
-// function setLoading(buttonId, textId, isLoading, loadingText = 'Processing...') {
-//     const button = document.getElementById(buttonId);
-//     const text = document.getElementById(textId);
-    
-//     if (isLoading) {
-//         button.disabled = true;
-//         text.innerHTML = `<span class="loading"></span>${loadingText}`;
-//     } else {
-//         button.disabled = false;
-//         text.innerHTML = text.getAttribute('data-original') || text.textContent.replace(/Processing\\.\\.\\.|Signing in\\.\\.\\.|Sending\\.\\.\\.|Loading\\.\\.\\./, '');
-//     }
-// }
-
-// function signIn() {
-//     setLoading('signin-btn', 'signin-text', true, 'Redirecting...');
-//     showStatus('Redirecting to Microsoft sign-in...', 'info');
-//     window.location.href = '/signin';
-// }
-
-// async function sendEmail() {
-//     const recipient = document.getElementById('recipient').value;
-//     const subject = document.getElementById('subject').value;
-//     const message = document.getElementById('message').value;
-
-//     if (!recipient) {
-//         showStatus('Please enter a recipient email address', 'error');
-//         return;
-//     }
-
-//     if (!subject.trim()) {
-//         showStatus('Please enter a subject', 'error');
-//         return;
-//     }
-
-//     if (!message.trim()) {
-//         showStatus('Please enter a message', 'error');
-//         return;
-//     }
-
-//     setLoading('send-btn', 'send-text', true, 'Sending...');
-//     showStatus('Sending email...', 'info');
-
-//     try {
-//         const url = `/send-mail/${encodeURIComponent(recipient)}?subject=${encodeURIComponent(subject)}&message=${encodeURIComponent(message)}`;
-//         const response = await fetch(url, {
-//             method: 'GET'
-//         });
-
-//         if (response.ok) {
-//             const result = await response.json();
-//             showStatus(`Email sent successfully to ${recipient}!`, 'success');
-//             updateStep(3);
-            
-//             setTimeout(() => {
-//                 document.getElementById('recipient').value = '';
-//                 document.getElementById('subject').value = 'Wanna go out for lunch?';
-//                 document.getElementById('message').value = 'I know a sweet spot that just opened around us!';
-//             }, 2000);
-//         } else {
-//             const errorData = await response.json();
-//             showStatus(`Failed to send email: ${errorData.error}`, 'error');
-//         }
-//     } catch (error) {
-//         showStatus(`Error: ${error.message}`, 'error');
-//     } finally {
-//         setLoading('send-btn', 'send-text', false);
-//     }
-// }
-
-// async function loadUserProfile() {
-//     try {
-//         const response = await fetch('/get-user-profile');
-//         if (response.ok) {
-//             const user = await response.json();
-//             document.getElementById('user-name').textContent = user.displayName;
-//             document.getElementById('user-email').textContent = user.email;
-//             document.getElementById('user-title').textContent = user.jobTitle || '';
-            
-//             // Show user info section
-//             document.getElementById('user-info-section').classList.remove('hidden');
-//         }
-//     } catch (error) {
-//         console.log('Error loading user profile:', error);
-//     }
-// }
-
-// async function viewEmails() {
-//     showStatus('Loading recent emails...', 'info');
-    
-//     try {
-//         const response = await fetch('/get-mails/10');
-        
-//         if (response.ok) {
-//             const data = await response.json();
-//             displayEmails(data.value || []);
-            
-//             document.getElementById('email-section').classList.add('hidden');
-//             document.getElementById('emails-section').classList.remove('hidden');
-//             showStatus('', 'info');
-//         } else {
-//             const errorText = await response.text();
-//             showStatus(`Failed to fetch emails: ${errorText}`, 'error');
-//         }
-//     } catch (error) {
-//         showStatus(`Error: ${error.message}`, 'error');
-//     }
-// }
-
-// function displayEmails(emails) {
-//     const emailsList = document.getElementById('emails-list');
-//     emailsList.innerHTML = '';
-
-//     if (emails.length === 0) {
-//         emailsList.innerHTML = '<p style="color: #666; text-align: center;">No emails found.</p>';
-//         return;
-//     }
-
-//     emails.forEach(email => {
-//         const emailDiv = document.createElement('div');
-//         emailDiv.style.cssText = `
-//             border: 1px solid #e1e5e9;
-//             border-radius: 8px;
-//             padding: 15px;
-//             margin-bottom: 10px;
-//             background: #f8f9fa;
-//             text-align: left;
-//         `;
-
-//         const subject = email.subject || 'No Subject';
-//         const sender = email.from?.emailAddress?.address || 'Unknown Sender';
-//         const receivedTime = new Date(email.receivedDateTime).toLocaleString();
-//         const preview = (email.bodyPreview || '').substring(0, 100) + '...';
-
-//         emailDiv.innerHTML = `
-//             <div style="font-weight: bold; color: #333; margin-bottom: 5px;">${subject}</div>
-//             <div style="color: #0078d4; font-size: 14px; margin-bottom: 5px;">From: ${sender}</div>
-//             <div style="color: #666; font-size: 12px; margin-bottom: 8px;">${receivedTime}</div>
-//             <div style="color: #555; font-size: 14px;">${preview}</div>
-//         `;
-
-//         emailsList.appendChild(emailDiv);
-//     });
-// }
-
-// function backToForm() {
-//     document.getElementById('emails-section').classList.add('hidden');
-//     document.getElementById('email-section').classList.remove('hidden');
-// }
-
-// function signOut() {
-//     if (confirm('Are you sure you want to sign out?')) {
-//         showStatus('Signing out...', 'info');
-        
-//         isAuthenticated = false;
-//         updateStep(1);
-        
-//         document.getElementById('email-section').classList.add('hidden');
-//         document.getElementById('emails-section').classList.add('hidden');
-//         document.getElementById('user-info-section').classList.add('hidden');
-//         document.getElementById('signin-section').classList.remove('hidden');
-        
-//         showStatus('Signed out successfully', 'success');
-        
-//         document.getElementById('recipient').value = '';
-//         document.getElementById('subject').value = 'Wanna go out for lunch?';
-//         document.getElementById('message').value = 'I know a sweet spot that just opened around us!';
-        
-//         // Clear user info
-//         document.getElementById('user-name').textContent = 'Loading...';
-//         document.getElementById('user-email').textContent = 'Loading...';
-//         document.getElementById('user-title').textContent = '';
-//     }
-// }
-
-// window.addEventListener('load', () => {
-//     const urlParams = new URLSearchParams(window.location.search);
-    
-//     // Check for authentication success
-//     if (urlParams.get('auth') === 'success') {
-//         showStatus('Authentication successful! Welcome!', 'success');
-//         isAuthenticated = true;
-//         updateStep(2);
-        
-//         document.getElementById('signin-section').classList.add('hidden');
-//         document.getElementById('email-section').classList.remove('hidden');
-        
-//         // Load user profile
-//         loadUserProfile();
-        
-//         // Clean up URL
-//         window.history.replaceState({}, document.title, '/app');
-//     } else if (urlParams.get('auth') === 'error') {
-//         showStatus('Authentication failed. Please try again.', 'error');
-//         window.history.replaceState({}, document.title, '/app');
-//     }
-    
-//     // If there's a code parameter, show processing message
-//     if (urlParams.get('code')) {
-//         showStatus('Processing authentication...', 'info');
-//     }
-// });
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     document.getElementById('signin-text').setAttribute('data-original', 'Sign In with Microsoft');
-//     document.getElementById('send-text').setAttribute('data-original', 'Send Email');
-// });
-
-
 function toggleRecipientMethod() {
     const method = document.getElementById('recipients-method').value;
 
@@ -379,141 +142,8 @@ function signIn() {
     window.location.href = '/signin';
 }
 
-// Enhanced sendEmail function with multiple recipient support
-<<<<<<< HEAD
-// async function sendEmail() {
-//     const method = document.getElementById('recipients-method').value;
-//     const subject = document.getElementById('subject').value;
-//     const message = document.getElementById('message').value;
 
-//     if (!subject.trim()) {
-//         showStatus('Please enter a subject', 'error');
-//         return;
-//     }
 
-//     if (!message.trim()) {
-//         showStatus('Please enter a message', 'error');
-//         return;
-//     }
-
-//     let recipients = [];
-//     let formData = new FormData();
-//     let useFormData = false;
-
-//     // Collect recipients based on method
-//     switch(method) {
-//         case 'single':
-//             const singleEmail = document.getElementById('recipient').value.trim();
-//             if (!singleEmail) {
-//                 showStatus('Please enter a recipient email address', 'error');
-//                 return;
-//             }
-//             recipients = [{name: singleEmail.split('@')[0], email: singleEmail}];
-//             break;
-            
-//         case 'text':
-//             const textEmails = document.getElementById('recipients-text').value;
-//             const emails = parseEmailAddresses(textEmails);
-//             if (emails.length === 0) {
-//                 showStatus('Please enter valid email addresses', 'error');
-//                 return;
-//             }
-//             recipients = emails.map(email => ({name: email.split('@')[0], email: email}));
-//             break;
-            
-//         case 'file':
-//             const fileInput = document.getElementById('recipients-file');
-//             if (!fileInput.files.length) {
-//                 showStatus('Please select a file with recipients', 'error');
-//                 return;
-//             }
-            
-//             const file = fileInput.files[0];
-//             const allowedExtensions = ['txt', 'csv', 'xlsx', 'xls'];
-//             const fileExtension = file.name.split('.').pop().toLowerCase();
-            
-//             if (!allowedExtensions.includes(fileExtension)) {
-//                 showStatus('Please upload a valid file format (.txt, .csv, .xlsx, .xls)', 'error');
-//                 return;
-//             }
-            
-//             // Use FormData for file upload
-//             useFormData = true;
-//             formData.append('recipients_file', file);
-//             formData.append('subject', subject);
-//             formData.append('message', message);
-//             break;
-//     }
-
-//     setLoading('send-btn', 'send-text', true, 'Sending...');
-//     showStatus('Processing recipients and sending email(s)...', 'info');
-
-//     try {
-//         let response;
-
-//         if (useFormData) {
-//             // Send as form data for file upload
-//             response = await fetch('/send-mail', {
-//                 method: 'POST',
-//                 body: formData
-//             });
-//         } else {
-//             // Send as JSON for text/single recipient
-//             response = await fetch('/send-mail', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 },
-//                 body: JSON.stringify({
-//                     recipients: recipients,
-//                     subject: subject,
-//                     message: message
-//                 })
-//             });
-//         }
-
-//         if (response.ok) {
-//             const result = await response.json();
-//             if (result.campaign_id) {
-//                 sessionStorage.setItem('campaign_id', result.campaign_id);
-//             }
-//             // sessionStorage.setItem('campaign_id', "a92e2697-aca1-400a-ba54-e121a5f87a8e")
-//             let statusMessage = `🎉 Successfully sent ${result.sent_count} email(s) out of ${result.total_recipients} recipients`;
-            
-//             if (result.invalid_recipients && result.invalid_recipients.length > 0) {
-//                 statusMessage += `\n❌ Invalid emails: ${result.invalid_recipients.join(', ')}`;
-//             }
-            
-//             if (result.failed_recipients && result.failed_recipients.length > 0) {
-//                 statusMessage += `\n⚠️ Failed to send to: ${result.failed_recipients.join(', ')}`;
-//             }
-            
-//             showStatus(statusMessage, 'success');
-//             updateStep(3);
-            
-//             // Reset form after successful send
-//             setTimeout(() => {
-//                 document.getElementById('recipient').value = '';
-//                 document.getElementById('recipients-text').value = '';
-//                 document.getElementById('recipients-file').value = '';
-//                 document.getElementById('subject').value = 'Wanna go out for lunch?';
-//                 document.getElementById('message').value = 'Hi {name},\n\nI know a sweet spot that just opened around us! Would you like to join me for lunch?\n\nBest regards';
-//                 document.getElementById('recipients-method').value = 'single';
-//                 toggleRecipientMethod();
-//             }, 3000);
-//         } else {
-//             const errorData = await response.json();
-//             showStatus(`❌ Failed to send email: ${errorData.error}`, 'error');
-//         }
-//     } catch (error) {
-//         showStatus(`❌ Error: ${error.message}`, 'error');
-//     } finally {
-//         setLoading('send-btn', 'send-text', false);
-//     }
-// }
-
-=======
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 async function sendEmail() {
     const method = document.getElementById('recipients-method').value;
     const subject = document.getElementById('subject').value;
@@ -579,13 +209,9 @@ async function sendEmail() {
     }
 
     setLoading('send-btn', 'send-text', true, 'Sending...');
-<<<<<<< HEAD
     
     // Show sending section
     showSendingProgress();
-=======
-    showStatus('Processing recipients and sending email(s)...', 'info');
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
     try {
         let response;
@@ -613,7 +239,6 @@ async function sendEmail() {
 
         if (response.ok) {
             const result = await response.json();
-<<<<<<< HEAD
             
             // Store campaign ID for tracking
             if (result.campaign_id) {
@@ -623,23 +248,6 @@ async function sendEmail() {
             // Hide sending progress and show detailed results
             hideSendingProgress();
             showDetailedResults(result);
-=======
-            if (result.campaign_id) {
-                sessionStorage.setItem('campaign_id', result.campaign_id);
-            }
-
-            let statusMessage = `🎉 Successfully sent ${result.sent_count} email(s) out of ${result.total_recipients} recipients`;
-            
-            if (result.invalid_recipients && result.invalid_recipients.length > 0) {
-                statusMessage += `\n❌ Invalid emails: ${result.invalid_recipients.join(', ')}`;
-            }
-            
-            if (result.failed_recipients && result.failed_recipients.length > 0) {
-                statusMessage += `\n⚠️ Failed to send to: ${result.failed_recipients.join(', ')}`;
-            }
-            
-            showStatus(statusMessage, 'success');
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             updateStep(3);
             
             // Reset form after successful send
@@ -651,7 +259,6 @@ async function sendEmail() {
                 document.getElementById('message').value = 'Hi {name},\n\nI know a sweet spot that just opened around us! Would you like to join me for lunch?\n\nBest regards';
                 document.getElementById('recipients-method').value = 'single';
                 toggleRecipientMethod();
-<<<<<<< HEAD
             }, 5000);
         } else {
             const errorData = await response.json();
@@ -660,21 +267,12 @@ async function sendEmail() {
         }
     } catch (error) {
         hideSendingProgress();
-=======
-            }, 3000);
-        } else {
-            const errorData = await response.json();
-            showStatus(`❌ Failed to send email: ${errorData.error}`, 'error');
-        }
-    } catch (error) {
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         showStatus(`❌ Error: ${error.message}`, 'error');
     } finally {
         setLoading('send-btn', 'send-text', false);
     }
 }
 
-<<<<<<< HEAD
 // Function to show sending progress
 function showSendingProgress() {
     document.getElementById('sending_content').classList.remove('hidden');
@@ -924,8 +522,6 @@ function showCampaignSummary() {
         });
 }
 
-=======
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 async function loadUserProfile() {
     try {
         const response = await fetch('/get-user-profile');
@@ -1136,71 +732,6 @@ let filteredTrackingData = [];
 let currentPage = 1;
 const itemsPerPage = 10;
 
-<<<<<<< HEAD
-=======
-// View Tracking Dashboard
-// async function viewTracking() {
-//     showStatus('Loading email tracking data...', 'info');
-    
-//     try {
-//         const response = await fetch('/api/analytics/campaign/<campaign_id>');
-        
-//         if (response.ok) {
-//             const data = await response.json();
-//             trackingData = data.emails || [];
-//             filteredTrackingData = [...trackingData];
-            
-//             updateTrackingSummary();
-//             displayTrackingData();
-            
-//             document.getElementById('email-section').classList.add('hidden');
-//             document.getElementById('emails-section').classList.add('hidden');
-//             document.getElementById('tracking-section').classList.remove('hidden');
-//             showStatus('', 'info');
-//         } else {
-//             const errorData = await response.json();
-//             showStatus(`Failed to load tracking data: ${errorData.error}`, 'error');
-//         }
-//     } catch (error) {
-//         showStatus(`Error: ${error.message}`, 'error');
-//     }
-// }
-// async function viewTracking() {
-//     showStatus('Loading email tracking data...', 'info');
-
-//     const campaignId = sessionStorage.getItem('campaign_id');
-
-//     if (!campaignId) {
-//         showStatus('No campaign ID found. Please send a campaign first.', 'error');
-//         return;
-//     }
-
-//     try {
-//         const response = await fetch(`/api/analytics/campaign/${campaignId}`);
-
-//         if (response.ok) {
-//             const data = await response.json();
-//             trackingData = data.tracking_data || [];
-//             filteredTrackingData = [...trackingData];
-
-//             updateTrackingSummary();      // Update summary UI (e.g., sent count, etc.)
-//             displayTrackingData();        // Render email tracking details
-
-//             // Toggle UI sections
-//             document.getElementById('email-section')?.classList.add('hidden');
-//             document.getElementById('emails-section')?.classList.add('hidden');
-//             document.getElementById('tracking-section')?.classList.remove('hidden');
-
-//             showStatus('', 'info');
-//         } else {
-//             const errorData = await response.json();
-//             showStatus(`Failed to load tracking data: ${errorData.error}`, 'error');
-//         }
-//     } catch (error) {
-//         showStatus(`Error: ${error.message}`, 'error');
-//     }
-// }
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 async function viewTracking() {
     showStatus('Loading email tracking data...', 'info');
 
@@ -1213,17 +744,11 @@ async function viewTracking() {
 
     try {
         const response = await fetch(`/api/analytics/campaign/${campaignId}`);
-<<<<<<< HEAD
         if (response.ok) {
             const data = await response.json();
             console.log("response of /api/analytics/campaign",data)
             console.log("response of /api/analytics/campaign recipients data ",data.recipients)
 
-=======
-
-        if (response.ok) {
-            const data = await response.json();
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
             // Convert recipients into enriched trackingData
             trackingData = data.recipients.map(r => ({
@@ -1235,25 +760,17 @@ async function viewTracking() {
                 clicks: r.clicks,
                 opened_at: r.first_open,
                 clicked_at: r.clicks > 0 ? r.first_open : null,
-<<<<<<< HEAD
                 unsubscribed : r.unsubscribed,
                 unsubscribe_at : r.unsubscribe_date,
                 opened: r.opens > 0,
                 replies :r.replies>0,
                 replies_at : r.reply_date,
-=======
-                opened: r.opens > 0,
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 clicked: r.clicks > 0,
                 sent_at: r.first_open || new Date().toISOString() // fallback
             }));
 
             filteredTrackingData = [...trackingData];
-<<<<<<< HEAD
             console.log("tracking data \n",filteredTrackingData)
-=======
-
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             updateTrackingSummary(data);
             displayTrackingData();
 
@@ -1276,60 +793,23 @@ function updateTrackingSummary(campaignData) {
     const totalOpened = campaignData.unique_opens;
     const totalClicked = campaignData.unique_clicks;
     const openRate = campaignData.open_rate;
-<<<<<<< HEAD
     const unsubscribe_count = campaignData.unsubscribe_count;
     const unsubscribe_rate = campaignData.unsubscribe_rate;
     const reply_count = campaignData.reply_count;
     const reply_rate = campaignData.reply_rate;
  
-=======
-
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     document.getElementById('total-sent').textContent = totalSent;
     document.getElementById('total-opened').textContent = totalOpened;
     document.getElementById('total-clicked').textContent = totalClicked;
     document.getElementById('open-rate').textContent = `${openRate}%`;
-<<<<<<< HEAD
     document.getElementById('unsubscribe-count').textContent = unsubscribe_count;
     document.getElementById('unsubscribe-rate').textContent = `${unsubscribe_rate}%`;
     document.getElementById('reply_count').textContent = reply_count;
     document.getElementById('reply_rate').textContent = `${reply_rate}%`;
 
-=======
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 }
 
 
-// Display Tracking Data
-// function displayTrackingData() {
-//     const trackingList = document.getElementById('tracking-list');
-//     const paginationDiv = document.getElementById('tracking-pagination');
-    
-//     if (filteredTrackingData.length === 0) {
-//         trackingList.innerHTML = '<div class="no-data">📭 No tracking data available</div>';
-//         paginationDiv.style.display = 'none';
-//         return;
-//     }
-
-//     // Calculate pagination
-//     const totalPages = Math.ceil(filteredTrackingData.length / itemsPerPage);
-//     const startIndex = (currentPage - 1) * itemsPerPage;
-//     const endIndex = startIndex + itemsPerPage;
-//     const pageData = filteredTrackingData.slice(startIndex, endIndex);
-
-//     // Display tracking items
-//     trackingList.innerHTML = pageData.map(email => createTrackingItem(email)).join('');
-
-//     // Update pagination
-//     if (totalPages > 1) {
-//         paginationDiv.style.display = 'flex';
-//         document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
-//         document.getElementById('prev-page').disabled = currentPage === 1;
-//         document.getElementById('next-page').disabled = currentPage === totalPages;
-//     } else {
-//         paginationDiv.style.display = 'none';
-//     }
-// }
 function displayTrackingData() {
     const trackingList = document.getElementById('tracking-list');
     const paginationDiv = document.getElementById('tracking-pagination');
@@ -1452,68 +932,43 @@ function getStatusBadge(email) {
 
 // Get Activity Timeline
 function getActivityTimeline(email) {
-<<<<<<< HEAD
     const timeline = [];    
-=======
-    const timeline = [];
-    
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     timeline.push(`
         <div class="timeline-item">
             <div class="timeline-icon">📤</div>
             <div class="timeline-content">
                 <div class="timeline-title">Email Sent</div>
-<<<<<<< HEAD
                 <div class="timeline-time">${new Date(email.sent_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</div>
-=======
-                <div class="timeline-time">${new Date(email.sent_at).toLocaleString()}</div>
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             </div>
         </div>
     `);
 
     if (email.opened_at) {
-<<<<<<< HEAD
 
         timeline.push(`
 
-=======
-        timeline.push(`
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
             <div class="timeline-item">
                 <div class="timeline-icon">👀</div>
                 <div class="timeline-content">
                     <div class="timeline-title">Email Opened</div>
-<<<<<<< HEAD
                     <div class="timeline-time">${new Date(email.opened_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</div>
-=======
-                    <div class="timeline-time">${new Date(email.opened_at).toLocaleString()}</div>
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 </div>
             </div>
         `);
     }
 
     if (email.clicked_at) {
-<<<<<<< HEAD
 
-=======
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         timeline.push(`
             <div class="timeline-item">
                 <div class="timeline-icon">🖱️</div>
                 <div class="timeline-content">
                     <div class="timeline-title">Link Clicked</div>
-<<<<<<< HEAD
                     <div class="timeline-time">${new Date(email.clicked_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</div>
-=======
-                    <div class="timeline-time">${new Date(email.clicked_at).toLocaleString()}</div>
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 </div>
             </div>
         `);
     }
-<<<<<<< HEAD
     if (email.unsubscribe_at) {
         timeline.push(`
             <div class="timeline-item">
@@ -1536,9 +991,6 @@ function getActivityTimeline(email) {
             </div>
     `);
 }
-=======
-
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     return timeline.join('');
 }
 
@@ -1748,13 +1200,10 @@ function backToForm() {
 document.addEventListener('DOMContentLoaded', () => {
     // ... existing code ...
     
-<<<<<<< HEAD
 // document.addEventListener('DOMContentLoaded', () => {
 //     document.getElementById('signin-text').setAttribute('data-original', 'Sign In with Microsoft');
 //     document.getElementById('send-text').setAttribute('data-original', 'Send Email');
 // });
-=======
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     // Close modal when clicking outside
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal-overlay')) {
@@ -1768,10 +1217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
-<<<<<<< HEAD
 
 });
 
-=======
-});
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
