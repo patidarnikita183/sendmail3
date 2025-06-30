@@ -93,20 +93,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-<<<<<<< HEAD
                                     <td>Nikita Patidar</td>
                                     <td>nikita@example.com</td>
                                 </tr>
     
-=======
-                                    <td>John Doe</td>
-                                    <td>john@example.com</td>
-                                </tr>
-                                <tr>
-                                    <td>Jane Smith</td>
-                                    <td>jane@example.com</td>
-                                </tr>
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                             </tbody>
                         </table>
                         <small style="margin-top: 8px; display: block;">
@@ -142,13 +132,9 @@ Best regards</textarea>
                 <button class="btn" onclick="sendEmail()" id="send-btn">
                     <span id="send-text">📤 Send Email</span>
                 </button>
-<<<<<<< HEAD
                 <button class="btn" onclick="viewTracking()" id="view-tracking-btn" style="background: linear-gradient(135deg, #28a745, #20c997);">
                     📊 View Email Tracking
                 </button>
-=======
-
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
                 <button class="btn btn-secondary" onclick="viewEmails()" id="view-emails-btn">
                     📬 View Recent Emails
                 </button>
@@ -169,7 +155,6 @@ Best regards</textarea>
         </div>
     </div>
     <!-- Add this section after the email-section div and before emails-section -->
-<<<<<<< HEAD
 </div>
 
 <div id="sending_content" class="hidden" style="text-align: center; padding: 40px;">
@@ -209,13 +194,6 @@ Best regards</textarea>
     ">
         📊 Email Tracking Dashboard
     </h3>
-=======
-
-<!-- Email Tracking Section -->
-<div id="tracking-section" class="hidden">
-    <h3 style="margin-bottom: 24px 50px; color: #333; font-size: 24px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);">📊 Email Tracking Dashboard</h3>
-    
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     <!-- Summary Cards -->
     <div class="tracking-summary">
         <div class="summary-card">
@@ -247,7 +225,6 @@ Best regards</textarea>
                 <div class="summary-label">Open Rate</div>
             </div>
         </div>
-<<<<<<< HEAD
         <div class="summary-card">
             <div class="summary-icon">📈</div>
             <div class="summary-details">
@@ -280,12 +257,6 @@ Best regards</textarea>
 
     <!-- Filter Controls -->
     <!-- <div class="tracking-filters">
-=======
-    </div>
-
-    <!-- Filter Controls -->
-    <div class="tracking-filters">
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
         <div class="filter-group">
             <label for="date-filter">📅 Filter by Date:</label>
             <select id="date-filter" onchange="filterTrackingData()">
@@ -308,11 +279,7 @@ Best regards</textarea>
         <button class="btn btn-secondary" onclick="refreshTrackingData()" style="width: auto; padding: 8px 16px; font-size: 14px;">
             🔄 Refresh
         </button>
-<<<<<<< HEAD
     </div> -->
-=======
-    </div>
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
 
     <!-- Tracking List -->
     <div class="tracking-list" id="tracking-list">
@@ -336,13 +303,7 @@ Best regards</textarea>
 </div>
 
 <!-- Add this button in the email-section, after the "View Recent Emails" button -->
-<<<<<<< HEAD
 
-=======
-<button class="btn" onclick="viewTracking()" id="view-tracking-btn" style="background: linear-gradient(135deg, #28a745, #20c997);">
-    📊 View Email Tracking
-</button>
->>>>>>> fe64bfe6f6486390c4e82995b2d37c6e93a06ca4
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
