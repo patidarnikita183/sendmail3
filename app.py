@@ -56,7 +56,7 @@ REDIRECT_URI = os.getenv("REDIRECT_URI")
 BASE_URL = os.getenv("BASE_URL")
 print("4")
 # Microsoft Graph endpoints
-AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
+AUTHORITY = "https://login.microsoftonline.com/common"
 GRAPH_ENDPOINT = "https://graph.microsoft.com/v1.0"
 
 # Scopes
