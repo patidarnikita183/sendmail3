@@ -22,7 +22,7 @@ def init_tracking_db():
         recipients_collection.create_index("campaign_id")
         email_opens_collection.create_index("tracking_id")
         link_clicks_collection.create_index("tracking_id")
-        unsubscribes_collection.create_index([("email", 1), ("sender_email", 1)], unique=True)
+        unsubscribes_collection.create_index("email")
         unsubscribes_collection.create_index("sender_email")
         unsubscribes_collection.create_index("tracking_id")
         unsubscribes_collection.create_index("unsubscribed_at")
