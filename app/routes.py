@@ -640,17 +640,7 @@ def get_all_unsubscribes():
 @main_bp.route('/send-mail', methods=['POST'])
 def send_mail():
     try:
-        data = {
-            "error": "No valid email addresses found after filtering unsubscribed emails",
-            "unsubscribed_count": 1,
-            "unsubscribed_recipients": [
-                {
-                    "email": "nikitapatidar.xalt@gmail.com",
-                    "name": "nikitapatidar.xalt"
-                }
-            ]
-        }
-        return jsonify(data), 201
+        
         
         access_token = session.get('access_token')
         if not access_token:
