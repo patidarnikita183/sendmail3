@@ -865,59 +865,6 @@ def send_mail_single(recipient):
 @main_bp.route('/api/check-replies/<campaign_id>')
 def check_campaign_replies(campaign_id):
     try:
-        data = {
-            "campaign_id": "8ed1a5a7-9710-43fd-903a-3ce5c54512ec",
-            "campaign_name": "Campaign 8ed1a5a7-9710-43fd-903a-3ce5c54512ec",
-            "click_rate": 100.0,
-            "click_to_open_rate": 100.0,
-            "open_rate": 100.0,
-            "recipients": [
-                {
-                    "clicks": 1,
-                    "email": "nikitapatidar.xalt@gmail.com",
-                    "first_click": "Fri, 04 Jul 2025 06:48:42 GMT",
-                    "first_open": "Fri, 04 Jul 2025 06:48:16 GMT",
-                    "name": "nikitapatidar.xalt",
-                    "opens": 1,
-                    "replied": True,
-                    "replies": 1,
-                    "reply_date": "Fri, 04 Jul 2025 06:50:18 GMT",
-                    "sent_at": "Fri, 04 Jul 2025 06:47:29 GMT",
-                    "tracking_id": "bd4a69da-3ec6-468b-92fe-f1e096b3df83",
-                    "unsubscribe_date": "Fri, 04 Jul 2025 06:49:30 GMT",
-                    "unsubscribed": True
-                }
-            ],
-            "reply_count": 1,
-            "reply_details": [
-                {
-                    "body_preview": "<html><head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body><div dir=\"ltr\">yes</div><br><div class=\"gmail_quote gmail_quote_container\"><div dir=\"ltr\" class=\"gmail_att...",
-                    "received_at": "2025-07-04T06:50:18",
-                    "sender_email": "nikitapatidar.xalt@gmail.com",
-                    "sender_name": "nikita patidar",
-                    "subject": "Re: Wanna go out for lunch?",
-                    "tracking_id": "bd4a69da-3ec6-468b-92fe-f1e096b3df83"
-                }
-            ],
-            "reply_rate": 100.0,
-            "subject": "Wanna go out for lunch?",
-            "total_clicks": 1,
-            "total_opens": 1,
-            "total_sent": 1,
-            "unique_clicks": 1,
-            "unique_opens": 1,
-            "unique_replies": 1,
-            "unsubscribe_count": 1,
-            "unsubscribe_details": [
-                {
-                    "email": "nikitapatidar.xalt@gmail.com",
-                    "tracking_id": "bd4a69da-3ec6-468b-92fe-f1e096b3df83",
-                    "unsubscribed_at": "2025-07-04T06:49:30.218000"
-                }
-            ],
-            "unsubscribe_rate": 100.0
-        }
-        return jsonify(data), 200
         access_token = session.get('access_token')
         if not access_token:
             return jsonify({'error': 'User not authenticated'}), 401
