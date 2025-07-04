@@ -478,16 +478,6 @@ function showDetailedModal(result) {
                 margin-right: 10px;
             ">Close</button>
             
-            ${result.analytics_url ? `
-            <button onclick="window.open('${result.analytics_url}', '_blank')" style="
-                background: #17a2b8;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                cursor: pointer;
-            ">📈 View Analytics</button>
-            ` : ''}
         </div>
     `;
     
