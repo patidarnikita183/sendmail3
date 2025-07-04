@@ -477,7 +477,6 @@ function showDetailedModal(result) {
                 cursor: pointer;
                 margin-right: 10px;
             ">Close</button>
-            
         </div>
     `;
     
