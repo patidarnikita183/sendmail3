@@ -413,8 +413,8 @@ function showDetailedModal(result) {
         <div style="margin-bottom: 20px;">
             <h3>📈 Campaign Summary</h3>
             <p><strong>Campaign ID:</strong> ${result.campaign_id || 'N/A'}</p>
-            <p><strong>Total Recipients:</strong> ${result.total_recipients}</p>
-            <p><strong>Successfully Sent:</strong> ${result.sent_count}</p>
+            <p><strong>Total Recipients:</strong> ${result.total_recipients||0}</p>
+            <p><strong>Successfully Sent:</strong> ${result.sent_count||0}</p>
             <p><strong>Unsubscribed Count:</strong> ${result.unsubscribed_count || 0}</p>
             <p><strong>Tracking Enabled:</strong> ${result.tracking_enabled ? 'Yes' : 'No'}</p>
         </div>
@@ -759,14 +759,14 @@ async function viewTracking() {
                 opens: r.opens,
                 clicks: r.clicks,
                 opened_at: r.first_open,
-                clicked_at: r.clicks > 0 ? r.first_open : null,
+                clicked_at: r.first_click,
                 unsubscribed : r.unsubscribed,
                 unsubscribe_at : r.unsubscribe_date,
                 opened: r.opens > 0,
                 replies :r.replies>0,
                 replies_at : r.reply_date,
                 clicked: r.clicks > 0,
-                sent_at: r.first_open || new Date().toISOString() // fallback
+                sent_at: r.sent_at// fallback
             }));
 
             filteredTrackingData = [...trackingData];
@@ -933,6 +933,8 @@ function getStatusBadge(email) {
 // Get Activity Timeline
 function getActivityTimeline(email) {
     const timeline = [];    
+    console.log(email);
+
     timeline.push(`
         <div class="timeline-item">
             <div class="timeline-icon">📤</div>
